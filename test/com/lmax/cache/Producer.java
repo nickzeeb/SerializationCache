@@ -22,6 +22,7 @@ class Producer extends Thread {
     private final byte[][] bytes;
 
     private volatile boolean stop;
+    long numberOfUpdates;
 
     Producer(SerializationCache cache, byte[][] bytes) {
         super("Producer");
@@ -31,10 +32,8 @@ class Producer extends Thread {
 
     @Override
     public void run() {
-        long counter = 0;
-
         while(!stop) {
-            int id = computeId(counter++, bytes.length);
+            int id = computeId(numberOfUpdates++, bytes.length);
             cache.put(id, bytes[id]);
         }
     }

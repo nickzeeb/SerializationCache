@@ -14,11 +14,13 @@
 
 package com.lmax.cache;
 
+import static java.lang.Math.round;
+import static java.lang.System.out;
 import static java.util.concurrent.TimeUnit.SECONDS;
 
 public class PerformanceTest {
 
-    public static final int RUN_SECONDS = 60;
+    public static final int RUN_SECONDS = 120;
     private static final int SIZE = 16;
 
     private final SerializationCache cache;
@@ -30,7 +32,7 @@ public class PerformanceTest {
     }
 
     public long run() throws InterruptedException {
-        System.out.println("testing " + cache.getClass());
+        out.println("testing " + cache.getClass());
         byte[][] producerByteArrays = createByteArrays();
 
         Producer producer = new Producer(cache, producerByteArrays);
@@ -45,14 +47,14 @@ public class PerformanceTest {
         producer.endRun();
         consumer.endRun();
 
-        return computeAndPrintResults(consumer);
+        return computeAndPrintResults(producer, consumer);
     }
 
     private byte[][] createByteArrays() {
         byte[][] byteArrays = new byte[size][];
 
         for (int i = 0; i < size; i++) {
-            byteArrays[i] = createBytes((byte) i);
+            byteArrays[i] = createBytes((byte) (i + 65));
         }
 
         return byteArrays;
@@ -73,22 +75,22 @@ public class PerformanceTest {
         }
     }
 
-    private long computeAndPrintResults(Consumer consumer) {
+    private long computeAndPrintResults(Producer producer, Consumer consumer) {
         for (int i = 0; i < consumer.values.length; i++) {
-            System.out.println(consumer.values[i]);
+            out.println(new String(consumer.values[i]));
         }
 
-        double megaOpsPerSecond = (1000.0 * consumer.numberOfUpdates) / SECONDS.toNanos(RUN_SECONDS);
-        System.out.println(String.format("mops = %.0f", megaOpsPerSecond));
+        double megaOpsPerSecond = (1000.0 * producer.numberOfUpdates) / SECONDS.toNanos(RUN_SECONDS);
+        out.println(String.format("mops = %.0f", megaOpsPerSecond));
 
-        return Math.round(megaOpsPerSecond);
+        return round(megaOpsPerSecond);
     }
 
     private static long run(int runNumber) throws InterruptedException {
         SerializationCache cache = SerializationCacheFactory.build(SIZE);
         PerformanceTest test = new PerformanceTest(cache, SIZE);
 
-        System.out.println("\n======================================= run " + runNumber + " =======================================\n");
+        out.println("\n======================================= run " + runNumber + " =======================================\n");
         return test.run();
     }
 
