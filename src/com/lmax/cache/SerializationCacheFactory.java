@@ -19,7 +19,7 @@ public class SerializationCacheFactory {
     public static SerializationCache build(int size) {
 //        return new SynchronizedMapSerializationCache(size); //  5 Mops
 //        return new ConcurrentMapSerializationCache(size);   //  7 Mops
-//        return new ArraySerializationCache(size);           // 14 Mops
+//        return new ArraySerializationCache(size);           // 10 Mops
         return new LazyArraySerializationCache(size);         // 24 Mops
     }
 
