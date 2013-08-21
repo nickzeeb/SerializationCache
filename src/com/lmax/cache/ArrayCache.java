@@ -19,7 +19,7 @@ import java.util.concurrent.atomic.AtomicReferenceArray;
 
 public class ArrayCache implements Cache {
 
-    public static final int EMPTY = -1;
+    private static final int EMPTY = -1;
     private final int size;
     private final int[] ids;
     private final AtomicReferenceArray<byte[]> values;

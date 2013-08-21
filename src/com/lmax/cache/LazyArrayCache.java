@@ -19,7 +19,7 @@ import java.util.concurrent.atomic.AtomicReferenceArray;
 
 public class LazyArrayCache implements Cache {
 
-    public static final int EMPTY = -1;
+    private static final int EMPTY = -1;
     private final int size;
     private final int[] ids;
     private final AtomicReferenceArray<byte[]> values;
@@ -38,11 +38,13 @@ public class LazyArrayCache implements Cache {
 
             if (ids[i] == EMPTY) {
                 ids[i] = id;
+//              values.set(i, bytes);
                 values.lazySet(i, bytes);
                 return;
             }
 
             else if (ids[i] == id) {
+//              values.set(i, bytes);
                 values.lazySet(i, bytes);
                 return;
             }
