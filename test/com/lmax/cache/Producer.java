@@ -18,13 +18,13 @@ import static com.lmax.cache.Utils.computeId;
 
 class Producer extends Thread {
 
-    private final SerializationCache cache;
+    private final Cache cache;
     private final byte[][] bytes;
 
     private volatile boolean stop;
     long numberOfUpdates;
 
-    Producer(SerializationCache cache, byte[][] bytes) {
+    Producer(Cache cache, byte[][] bytes) {
         super("Producer");
         this.cache = cache;
         this.bytes = bytes;

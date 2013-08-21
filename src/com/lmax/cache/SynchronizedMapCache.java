@@ -14,10 +14,24 @@
 
 package com.lmax.cache;
 
-public interface SerializationCache {
+import java.util.HashMap;
 
-    void put(int id, byte[] bytes);
+public class SynchronizedMapCache implements Cache {
 
-    byte[] get(int id);
+    private final HashMap<Integer, byte[]> map;
+
+    public SynchronizedMapCache(int size) {
+        map = new HashMap<Integer, byte[]>(size);
+    }
+
+    @Override
+    public synchronized void put(int id, byte[] bytes) {
+        map.put(id, bytes);
+    }
+
+    @Override
+    public synchronized byte[] get(int id) {
+        return map.get(id);
+    }
 
 }

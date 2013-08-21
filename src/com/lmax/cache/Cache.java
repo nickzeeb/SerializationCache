@@ -14,13 +14,10 @@
 
 package com.lmax.cache;
 
-public class SerializationCacheFactory {
+public interface Cache {
 
-    public static SerializationCache build(int size) {
-//        return new SynchronizedMapSerializationCache(size); //  5 Mops
-//        return new ConcurrentMapSerializationCache(size);   //  7 Mops
-//        return new ArraySerializationCache(size);           // 10 Mops
-        return new LazyArraySerializationCache(size);         // 24 Mops
-    }
+    void put(int id, byte[] bytes);
+
+    byte[] get(int id);
 
 }

@@ -25,11 +25,11 @@ public class UnitTest {
     private static final byte[] BYTES_1 = "1".getBytes();
     private static final byte[] BYTES_2 = "2".getBytes();
 
-    private SerializationCache cache;
+    private Cache cache;
 
     @Before
     public void beforeEveryTest() {
-        cache = SerializationCacheFactory.build(8);
+        cache = CacheFactory.build(8);
     }
 
     @Test

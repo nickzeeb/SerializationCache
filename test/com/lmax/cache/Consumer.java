@@ -18,13 +18,13 @@ import static com.lmax.cache.Utils.computeId;
 
 class Consumer extends Thread {
     private final int cacheSize;
-    private final SerializationCache cache;
+    private final Cache cache;
     private volatile boolean stop;
 
     byte[][] values;
     long numberOfUpdates;
 
-    Consumer(SerializationCache cache, int cacheSize) {
+    Consumer(Cache cache, int cacheSize) {
         super("Consumer");
         this.cache = cache;
         this.cacheSize = cacheSize;

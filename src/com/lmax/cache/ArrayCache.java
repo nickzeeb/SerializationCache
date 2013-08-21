@@ -17,15 +17,14 @@ package com.lmax.cache;
 import java.util.Arrays;
 import java.util.concurrent.atomic.AtomicReferenceArray;
 
-// perf =  mops
-public class ArraySerializationCache implements SerializationCache {
+public class ArrayCache implements Cache {
 
     public static final int EMPTY = -1;
     private final int size;
     private final int[] ids;
     private final AtomicReferenceArray<byte[]> values;
 
-    public ArraySerializationCache(int size) {
+    public ArrayCache(int size) {
         this.size = size;
         this.ids = new int[size];
         this.values = new AtomicReferenceArray<byte[]>(size);

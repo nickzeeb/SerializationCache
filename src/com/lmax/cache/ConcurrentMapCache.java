@@ -17,12 +17,11 @@ package com.lmax.cache;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.ConcurrentMap;
 
-// perf =  mops
-public class ConcurrentMapSerializationCache implements SerializationCache {
+public class ConcurrentMapCache implements Cache {
 
     private final ConcurrentMap<Integer, byte[]> map;
 
-    public ConcurrentMapSerializationCache(int size) {
+    public ConcurrentMapCache(int size) {
         map = new ConcurrentHashMap<Integer, byte[]>(size);
     }
 

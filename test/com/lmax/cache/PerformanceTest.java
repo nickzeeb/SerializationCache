@@ -23,10 +23,10 @@ public class PerformanceTest {
     public static final int RUN_SECONDS = 120;
     private static final int SIZE = 16;
 
-    private final SerializationCache cache;
+    private final Cache cache;
     private final int size;
 
-    public PerformanceTest(SerializationCache cache, int size) {
+    public PerformanceTest(Cache cache, int size) {
         this.cache = cache;
         this.size = size;
     }
@@ -87,7 +87,7 @@ public class PerformanceTest {
     }
 
     private static long run(int runNumber) throws InterruptedException {
-        SerializationCache cache = SerializationCacheFactory.build(SIZE);
+        Cache cache = CacheFactory.build(SIZE);
         PerformanceTest test = new PerformanceTest(cache, SIZE);
 
         out.println("\n======================================= run " + runNumber + " =======================================\n");

@@ -14,25 +14,13 @@
 
 package com.lmax.cache;
 
-import java.util.HashMap;
+public class CacheFactory {
 
-// perf =  mops
-public class SynchronizedMapSerializationCache implements SerializationCache {
-
-    private final HashMap<Integer, byte[]> map;
-
-    public SynchronizedMapSerializationCache(int size) {
-        map = new HashMap<Integer, byte[]>(size);
-    }
-
-    @Override
-    public synchronized void put(int id, byte[] bytes) {
-        map.put(id, bytes);
-    }
-
-    @Override
-    public synchronized byte[] get(int id) {
-        return map.get(id);
+    public static Cache build(int size) {
+//        return new SynchronizedMapCache(size); //  5 Mops
+//        return new ConcurrentMapCache(size);   //  7 Mops
+//        return new ArrayCache(size);           // 10 Mops
+        return new LazyArrayCache(size);         // 24 Mops
     }
 
 }
