@@ -16,8 +16,8 @@ package com.lmax.cache;
 
 public interface Cache {
 
-    void put(int id, byte[] bytes);
+    void put(Integer id, byte[] bytes);
 
-    byte[] get(int id);
+    byte[] get(Integer Integer);
 
 }

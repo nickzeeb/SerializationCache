@@ -25,12 +25,12 @@ public class SynchronizedMapCache implements Cache {
     }
 
     @Override
-    public synchronized void put(int id, byte[] bytes) {
+    public synchronized void put(Integer id, byte[] bytes) {
         map.put(id, bytes);
     }
 
     @Override
-    public synchronized byte[] get(int id) {
+    public synchronized byte[] get(Integer id) {
         return map.get(id);
     }
 

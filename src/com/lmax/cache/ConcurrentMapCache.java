@@ -26,12 +26,12 @@ public class ConcurrentMapCache implements Cache {
     }
 
     @Override
-    public void put(int id, byte[] bytes) {
+    public void put(Integer id, byte[] bytes) {
         map.put(id, bytes);
     }
 
     @Override
-    public byte[] get(int id) {
+    public byte[] get(Integer id) {
         return map.get(id);
     }
 

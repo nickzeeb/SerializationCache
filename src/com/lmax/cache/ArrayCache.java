@@ -19,30 +19,28 @@ import java.util.concurrent.atomic.AtomicReferenceArray;
 
 public class ArrayCache implements Cache {
 
-    private static final int EMPTY = -1;
     private final int size;
-    private final int[] ids;
+    private final AtomicReferenceArray<Integer> ids;
     private final AtomicReferenceArray<byte[]> values;
 
     public ArrayCache(int size) {
         this.size = size;
-        this.ids = new int[size];
+        this.ids = new AtomicReferenceArray<Integer>(size);
         this.values = new AtomicReferenceArray<byte[]>(size);
-
-        Arrays.fill(ids, EMPTY);
     }
 
     @Override
-    public void put(int id, byte[] bytes) {
+    public void put(Integer id, byte[] bytes) {
         for (int i = 0; i < size; i++) {
+            Integer currentId = ids.get(i);
 
-            if (ids[i] == EMPTY) {
-                ids[i] = id;
+            if (currentId == null) {
                 values.set(i, bytes);
+                ids.set(i, id);
                 return;
             }
 
-            else if (ids[i] == id) {
+            else if (currentId.equals(id)) {
                 values.set(i, bytes);
                 return;
             }
@@ -50,9 +48,9 @@ public class ArrayCache implements Cache {
     }
 
     @Override
-    public byte[] get(int id) {
+    public byte[] get(Integer id) {
         for (int i = 0; i < size; i++) {
-            if (ids[i] == id) {
+            if (id.equals(ids.get(i))) {
                 return values.get(i);
             }
         }
