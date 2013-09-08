@@ -18,9 +18,9 @@ public class CacheFactory {
 
     public static Cache build(int size) {
 //        return new SynchronizedMapCache(size); //  5 Mops
-//        return new ConcurrentMapCache(size);   //  7 Mops
-//        return new ArrayCache(size);           // 10 Mops
-        return new LazyArrayCache(size);         // 24 Mops
+//        return new ConcurrentMapCache(size);   //  10 Mops
+//        return new ArrayCache(size);           // 13 Mops
+        return new LazyArrayCache(size);         // 18 Mops
     }
 
 }

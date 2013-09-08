@@ -14,27 +14,43 @@
 
 package com.lmax.cache;
 
+import java.util.concurrent.CountDownLatch;
+
 import static com.lmax.cache.Utils.computeId;
 
 class Producer extends Thread {
 
     private final Cache cache;
     private final byte[][] bytes;
+    private final CountDownLatch start;
 
     private volatile boolean stop;
     long numberOfUpdates;
 
-    Producer(Cache cache, byte[][] bytes) {
+    Producer(Cache cache, byte[][] bytes, CountDownLatch start) {
         super("Producer");
         this.cache = cache;
         this.bytes = bytes;
+        this.start = start;
     }
 
     @Override
     public void run() {
+        synchronizeStart();
+
         while(!stop) {
             int id = computeId(numberOfUpdates++, bytes.length);
             cache.put(id, bytes[id]);
+        }
+    }
+
+    private void synchronizeStart() {
+        start.countDown();
+
+        try {
+            start.await();
+        } catch (InterruptedException e) {
+            e.printStackTrace();
         }
     }
 

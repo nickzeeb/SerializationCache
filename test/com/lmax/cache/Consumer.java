@@ -14,29 +14,45 @@
 
 package com.lmax.cache;
 
+import java.util.concurrent.CountDownLatch;
+
 import static com.lmax.cache.Utils.computeId;
 
 class Consumer extends Thread {
     private final int cacheSize;
+    private final CountDownLatch start;
     private final Cache cache;
     private volatile boolean stop;
 
     byte[][] values;
     long numberOfUpdates;
 
-    Consumer(Cache cache, int cacheSize) {
+    Consumer(Cache cache, int cacheSize, CountDownLatch start) {
         super("Consumer");
         this.cache = cache;
         this.cacheSize = cacheSize;
+        this.start = start;
         this.values = new byte[cacheSize][];
     }
 
     @Override
     public void run() {
+        synchronizeStart();
+
         while (!stop) {
             int id = computeId(numberOfUpdates++, cacheSize);
             byte[] bytes = cache.get(id);
             values[id] = bytes;
+        }
+    }
+
+    private void synchronizeStart() {
+        start.countDown();
+
+        try {
+            start.await();
+        } catch (InterruptedException e) {
+            e.printStackTrace();
         }
     }
 

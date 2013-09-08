@@ -14,13 +14,15 @@
 
 package com.lmax.cache;
 
+import java.util.concurrent.CountDownLatch;
+
 import static java.lang.Math.round;
 import static java.lang.System.out;
 import static java.util.concurrent.TimeUnit.SECONDS;
 
 public class PerformanceTest {
 
-    public static final int RUN_SECONDS = 120;
+    public static final int RUN_SECONDS = 180;
     private static final int SIZE = 16;
 
     private final Cache cache;
@@ -35,13 +37,16 @@ public class PerformanceTest {
         out.println("testing " + cache.getClass());
         byte[][] producerByteArrays = createByteArrays();
 
-        Producer producer = new Producer(cache, producerByteArrays);
-        Consumer consumer = new Consumer(cache, size);
+        CountDownLatch start = new CountDownLatch(2);
+
+        Producer producer = new Producer(cache, producerByteArrays, start);
+        Consumer consumer = new Consumer(cache, size, start);
         gc();
 
         producer.start();
         consumer.start();
 
+        start.await();
         Thread.sleep(SECONDS.toMillis(RUN_SECONDS));
 
         producer.endRun();
